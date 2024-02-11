@@ -1,0 +1,85 @@
+html{
+    background-color: rgba(250, 167, 0, 0.1);
+}
+
+div#heading{
+    background-color: rgba(255, 119, 0, 0.6);
+    display: block;
+    height: 10%;
+}
+
+div#heading h1{
+    font-size: 50px;
+    font-weight: 700;
+    text-align: center;
+}
+
+div#heading p{
+    text-align: center;
+    text-decoration: none;
+    word-spacing: 5%;
+}
+
+div#heading a{
+    color: rgb(0,0,0);
+    font-size: xx-large;
+    margin: 5%;
+    text-decoration: none;
+}
+
+
+article{
+    display: block;
+    left:10%;
+    position: relative;
+    width: 80%;
+}
+
+h2.title{
+    font-size: xx-large;
+    left: -5%;
+    position: relative;
+}
+
+section{
+    display: block;
+    left:5%;
+    position: relative;
+}
+
+section p,section div p,section ul li{
+    font-size: large;
+}
+
+section h4{
+    color:rgb(200, 0, 0);
+    font-size: x-large;
+    font-weight:900;
+}
+
+section#p1 div{
+    float: left;
+}
+
+#clear{
+    clear:both
+}
+
+#picture1{
+    display: block;
+    float: left;
+    left:12.5%;
+    position: relative;
+    top:30px;
+}
+
+footer span{
+    background-color: rgba(255, 119, 0, 0.6);
+    display: block;
+    height: 100px;
+}
+
+footer span p{
+    font-size : large;
+    text-align: center;
+}
