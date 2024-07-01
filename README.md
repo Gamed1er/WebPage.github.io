@@ -6,6 +6,6 @@
 
 ## 網頁連結
 
-- 網頁一 (Html)  [https://reurl.cc/RW2ENZ]
-- 網頁二 (Html+Css)  [https://reurl.cc/mrp4gW]
-- 網頁三 (Html+Css+Js) [https://reurl.cc/77ELGy]
+- 網頁一 (Html)  [https://gamed1er.github.io/WebPage.github.io/自主學習-網頁製作/Html/main.html]
+- 網頁二 (Html+Css)  [https://gamed1er.github.io/WebPage.github.io/自主學習-網頁製作/Html + Css/main.html]
+- 網頁三 (Html+Css+Js) [https://gamed1er.github.io/WebPage.github.io/自主學習-網頁製作/Html + Css + JavaScript/main.html]
