@@ -1,91 +1,75 @@
+const VeryBig = 999999999999999999999999999999999999999999999999999999999999999999999999999n;
+
 document.addEventListener("DOMContentLoaded", function () {
-    //輸入
     var inputElement = document.getElementById("number");
     var answerElement = document.getElementById("answer1");
     inputElement.addEventListener("input", function () {
         var inputNumber = inputElement.value;
-        var ans=count_ans(Number(inputNumber));
-        //更新
-        if(inputNumber && ans!=0){
-            answerElement.textContent = inputNumber + "=" + ans;
+        if(Number(inputNumber) > VeryBig) inputElement.value = VeryBig;
+        var ans= count_ans(inputNumber);
+        // 更新
+        if(ans !== "Nah" && inputNumber){
+            answerElement.textContent = inputNumber + " = " + ans;
         }
         else {
-            answerElement.textContent = "=";
+            answerElement.textContent = inputNumber + " = ";
         }
     });
 });
 
-function count_ans(num){
+function count_ans(num) {
     num = Number(num);
-    //回傳非整數值
-    if(num%1!=0 || num<=0 || num>=Math.pow(10,31)) return 0;
-    //判斷數字可以倒6的幾次方
-    var ans=""; var series=1;
-    while(num>Math.pow(6,series)){
-        series++;
+    if (num > VeryBig) return "Nah";
+    if (num == 0) return "(6 - 6)";
+
+    let pow_6 = [];
+    for (var i = 1; i <= VeryBig; i *= 6) {
+        pow_6.push(i);
     }
-    //生成解答
-    for(var i=series-1;i>=0;i--){
-        var temp=Number(Math.floor(num/Math.pow(6,i)));
-        if(temp!=0 &&i!=series-1)ans+="+";
-        if(i==0 && temp!=0)ans+=became_to_6(temp);
-        if(i!=0 && temp!=0){
-            if(temp!=1) ans+="("+became_to_6(temp)+")*"; 
-            ans+="6";
-            if(i>1){
-                ans+="^";
-                if(i<6) ans+="(";
-                ans+=became_to_6(i);
-                if(i<6) ans+=")";
-            }
+
+    var ans = "", plus = false, minus = false;
+    if (num < 0) {
+        ans += "-(";
+        num *= -1;
+        minus = true;
+    }
+
+    for (var i = pow_6.length - 1; i >= 0; i--) {
+        let coefficient = Math.floor(num / pow_6[i]); // 取得該次方的係數
+        if (coefficient > 0) {
+            if (plus) ans += " + ";
+            else plus = true;
+            ans += became_to_6(coefficient); // 轉換係數為 6 表示
+            if (i > 1) ans += "*(6^" + became_to_6(i) + ")";
+            else if (i == 1) ans += "*6";
+            num %= pow_6[i]; // 更新剩餘值
         }
-        num%=Math.pow(6,i);
     }
+
+    if (minus) ans += ")";
     return ans;
 }
 
-//硬爆
-function became_to_6(num){
-    switch(num){
-        case 1: return "6/6"; break;
-        case 2: return "(6+6)/6"; break;
-        case 3: return "6/(6+6)"; break;
-        case 4: return "6-(6+6)/6"; break;
-        case 5: return "6-6/6"; break;
-        case 6: return "6"; break;
-        case 7: return "(6+6/6)"; break;
-        case 8: return "(6+(6+6)/6)"; break;
-        case 9: return "(6+6/(6+6))"; break;
-        case 10: return "(6+6-(6+6)/6)"; break;
-        case 11: return "(6+6-6/6)"; break;
-        case 12: return "(6+6)"; break;
-        case 13: return "(6+6+6/6)"; break;
-        case 14: return "(6+6+6/6+6/6)"; break;
-        case 15: return "(6/(6+6)*(6-(6/6)))"; break;
-        case 16: return "((6-(6+6)/6)*(6-6+6)/6)"; break;
-        case 17: return "(6+6+6-6/6)"; break;
-        case 18: return "(6+6+6)"; break;
-        case 19: return "(6+6+6+6/6)"; break;
-        case 20: return "((6-(6+6)/6)*(6-6/6))"; break;
-        case 21: return "(((6/6)*6+6/6)*((6+6)/6))"; break;
-        case 22: return "((6/6)*6+6-(6+6)/6+6+6)"; break;
-        case 23: return "(6+6+6+6-6/6)"; break;
-        case 24: return "(6*(6-(6+6)/6))"; break;
-        case 25: return "((6-6/6)*(6-6/6))"; break;
-        case 26: return "(6+6/(6+6)*(6/(6+6))-6/6)"; break;
-        case 27: return "(6+6/(6+6)*(6/(6+6)))"; break;
-        case 28: return "((6-(6+6)/6)*(6+6/6))"; break;
-        case 29: return "(6*6-6-6/6)"; break;
-        case 30: return "(6*6-6)"; break;
-        case 31: return "(6+(6-6/6)*(6-6/6))"; break;
-        case 32: return "(6*6-(6-(6+6)/6))"; break;
-        case 33: return "(6*6-6/(6+6))"; break;
-        case 34: return "(6*6-(6+6)/6)"; break;
-        case 35: return "(6*6-6/6)"; break;
-        case 36: return "(6*6)"; break;
-        case 37: return "(6*6+6/6)"; break;
-        case 38: return "(6*6+(6+6)/6)"; break;
-        case 39: return "(6*6+(6-(6+6)/6))"; break;
-        case 40: return "(6*6+6/(6+6))"; break;
+// 轉換數字為純 6 表示
+function became_to_6(num) {
+    let expr = {
+        0: "(6-6)",
+        1: "(6/6)",
+        2: "((6+6)/6)",
+        3: "(6/((6+6)/6))",
+        4: "(6-(6+6)/6)",
+        5: "(6-6/6)",
+        6: "6"
+    };
+
+    if (num in expr) return expr[num];
+
+    // 若 num 大於 6，則使用遞迴拆分成純 6 表達式
+    let closest = 6 * Math.floor(num / 6);
+    let remainder = num % 6;
+    if (remainder === 0) {
+        return "(" + became_to_6(closest / 6) + "*6)";
+    } else {
+        return "(" + became_to_6(closest / 6) + "*6 + " + became_to_6(remainder) + ")";
     }
 }
